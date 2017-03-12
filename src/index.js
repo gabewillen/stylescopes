@@ -215,7 +215,7 @@ export default function (stylePropTypes = {}, defaultStyleProps = {}) {
 
 
         render() {
-            return <style scoped style={{visibility: 'hidden'}}>
+            return <style scoped style={{display: 'none'}}>
                 {this.renderTextContent()}
             </style>;
         }
