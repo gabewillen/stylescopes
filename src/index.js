@@ -81,7 +81,7 @@ export default function (stylePropTypes = {}, defaultStyleProps = {}) {
         static _preprocess() {
             // here we generate our postcss ast
             const css = this._tag(this.template.strings, ...this.template.keys);
-            this.root = POSTCSS.process(`{ > *{${css}} }`).root;
+            this.root = POSTCSS.process(`{ > *:last-child {${css}} }`).root;
         }
 
         static embed(Component) {
@@ -215,7 +215,7 @@ export default function (stylePropTypes = {}, defaultStyleProps = {}) {
 
 
         render() {
-            return <style scoped style={{display: 'none'}}>
+            return <style scoped >
                 {this.renderTextContent()}
             </style>;
         }

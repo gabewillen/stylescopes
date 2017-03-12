@@ -99,7 +99,7 @@ export default function () {
         Style._preprocess = function _preprocess() {
             // here we generate our postcss ast
             var css = this._tag.apply(this, [this.template.strings].concat(this.template.keys));
-            this.root = POSTCSS.process('{ > *{' + css + '} }').root;
+            this.root = POSTCSS.process('{ > *:last-child {' + css + '} }').root;
         };
 
         Style.embed = function embed(Component) {
@@ -242,7 +242,7 @@ export default function () {
         Style.prototype.render = function render() {
             return React.createElement(
                 'style',
-                { scoped: true, style: { display: 'none' } },
+                { scoped: true },
                 this.renderTextContent()
             );
         };
