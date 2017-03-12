@@ -3,10 +3,17 @@ module.exports = {
   npm: {
     esModules: true,
     umd: {
-      global: 'StyloScope',
+      global: 'StyleScopes',
       externals: {
         react: 'React'
       }
     }
-  }
-}
+  },
+    webpack: {
+        extra: {
+            node: {
+                fs: 'empty'
+            }
+        }
+    }
+};
