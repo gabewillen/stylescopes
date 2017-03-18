@@ -1,46 +1,49 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import {render} from 'react-dom'
 
-import StyleScope from '../../src'
+import StyleScope, {css} from '../../src'
+import {FlexStyle} from './Flex';
+
+class AStyle extends StyleScope {
+    static propTypes = {};
+
+    static defaultProps = {
+        fee: 'green'
+    };
+
+    static textContent = css`
+        background-color: ${'fee'};
+    `
+}
+
+class BStyle extends StyleScope {
+
+    static defaultProps = {
+        foo: 'blue'
+    };
+
+    static textContent = css`
+    background-color: ${'foo'};
+`
+}
 
 
-const DemoStyle = StyleScope()
-    .css`
-  background-color: blue;
-  height: 100%;
-  &.foo {
-    color: red;
-  }
-`;
+const Demo = FlexStyle.Component(
+    AStyle.Component(
+        BStyle.Component(
+            class extends React.Component {
+                render() {
+                    return <div>
+                        hello
+                        <div>foo</div>
+                    </div>
+                }
+            }
+        )
+    )
+);
 
 
-const Button = StyleScope(
-    {
-        backgroundColor: React.PropTypes.string
-    }
-).css`
-    background-color: ${'backgroundColor'};
-`.embed(function Button(props) {
-    return <div {...props}>
-        BUTTON
-    </div>
-});
-
-
-const Demo = DemoStyle.embed(
-    class Demo extends React.Component {
-        render() {
-            const state = this.state || {clicked: false};
-            console.log('rendering demo', state);
-
-            return <div>
-                <Button backgroundColor={state.clicked ? 'yellow' : 'white'} onClick={() => this.setState({clicked: !state.clicked})}/>
-                hello
-                <div>foo</div>
-            </div>
-        }
-});
-
-
+console.log(Demo.defaultProps);
 
 render(<Demo/>, document.querySelector('#demo'));
