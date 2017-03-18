@@ -5,7 +5,7 @@ import Scope from './Scope';
 import Style, {css} from './Style';
 import Template from './Template';
 
-export {css}
+export {css} from './Style'
 
 
 function omit(obj, keys) {
@@ -44,7 +44,7 @@ export default class StyleScope extends Style {
             Style.preprocess(text);
         }
         const stylePropKeys = Object.keys(Style.propTypes);
-        class StyleScopedComponent extends StyleScope {
+        return class extends StyleScope {
 
             static defaultProps = {...Style.defaultProps, ...(Component.defaultProps || {})};
             static propTypes = {...Style.propTypes, ...(Component.propTypes || {})};
@@ -66,7 +66,6 @@ export default class StyleScope extends Style {
                 )
             }
         }
-        return StyleScopedComponent;
     }
 }
 

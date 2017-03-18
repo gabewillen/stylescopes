@@ -13,7 +13,7 @@ import Scope from './Scope';
 import Style, { css } from './Style';
 import Template from './Template';
 
-export { css };
+export { css } from './Style';
 
 function omit(obj, keys) {
     return (Object.keys(obj) || []).reduce(function (newObj, key) {
@@ -51,11 +51,11 @@ var StyleScope = function (_Style) {
             Style.preprocess(text);
         }
         var stylePropKeys = Object.keys(Style.propTypes);
-        var StyleScopedComponent = (_temp = _class = function (_StyleScope) {
-            _inherits(StyleScopedComponent, _StyleScope);
+        return _temp = _class = function (_StyleScope) {
+            _inherits(_class, _StyleScope);
 
-            function StyleScopedComponent(props) {
-                _classCallCheck(this, StyleScopedComponent);
+            function _class(props) {
+                _classCallCheck(this, _class);
 
                 var _this2 = _possibleConstructorReturn(this, _StyleScope.call(this, props));
 
@@ -63,7 +63,7 @@ var StyleScope = function (_Style) {
                 return _this2;
             }
 
-            StyleScopedComponent.prototype.render = function render() {
+            _class.prototype.render = function render() {
                 var styleProps = pick(this.props, stylePropKeys);
                 var props = omit(this.props, stylePropKeys);
                 var className = classnames(this.uid, this.props.className);
@@ -75,10 +75,8 @@ var StyleScope = function (_Style) {
                 );
             };
 
-            return StyleScopedComponent;
-        }(StyleScope), _class.defaultProps = _extends({}, Style.defaultProps, _Component.defaultProps || {}), _class.propTypes = _extends({}, Style.propTypes, _Component.propTypes || {}), _temp);
-
-        return StyleScopedComponent;
+            return _class;
+        }(StyleScope), _class.defaultProps = _extends({}, Style.defaultProps, _Component.defaultProps || {}), _class.propTypes = _extends({}, Style.propTypes, _Component.propTypes || {}), _temp;
     };
 
     return StyleScope;
