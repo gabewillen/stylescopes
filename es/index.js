@@ -101,6 +101,10 @@ var Style = function () {
     }, _temp);
 
     var _StyleCall = function _StyleCall() {
+        for (var _len3 = arguments.length, styles = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+            styles[_key3] = arguments[_key3];
+        }
+
         var _propTypes = assign.apply(undefined, [{}].concat(styles.map(function (base) {
             return base.propTypes || {};
         })));
@@ -204,8 +208,8 @@ var Style = function () {
     };
 
     var Style = function Style() {
-        for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-            args[_key3] = arguments[_key3];
+        for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+            args[_key4] = arguments[_key4];
         }
 
         if (this instanceof Style) {

@@ -47,7 +47,7 @@ export default class Style {
         return new Template(strings, strings.map((string, index) => keys[index]))
     };
 
-    call constructor(){
+    call constructor(...styles){
         const _propTypes = assign({}, ...styles.map(base => base.propTypes || {}));
         const _defaultProps = assign({}, ...styles.map(base => base.defaultProps || {}));
         const _templates = styles.map(S => S.textContent);
