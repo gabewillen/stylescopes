@@ -39,7 +39,6 @@ function assign(target, ...sources) {
     return target;
 }
 
-class StyleScope extends React.Component {}
 
 export default class Style {
 
@@ -99,6 +98,8 @@ export default class Style {
                 this.preprocess(this.textContent.tag());
                 return class extends Component {
                     static Style = this;
+                    static propTypes = {...this.propTypes, ...Component.propTypes};
+                    static defaultProps = {...this.defaultProps, ...Component.defaultProps};
 
                     _merge_styles(className, styleProps, props) {
                         let style = <Style {...props} className={className} styleProps={styleProps}/>;
