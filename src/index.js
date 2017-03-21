@@ -86,7 +86,7 @@ export default class Style {
                                     template.keys.push(...t.keys);
                                     template.strings.push(...t.strings);
                                     return template;
-                                }
+                                }, new Template()
                             )
                         }
                     )
