@@ -4,7 +4,7 @@ import {render, unmountComponentAtNode} from 'react-dom'
 
 import Component from 'src/'
 
-describe('Component', () => {
+describe('Scoped', () => {
   let node
 
   beforeEach(() => {

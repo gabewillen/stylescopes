@@ -1,4 +1,8 @@
+export { Style as default };
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9,11 +13,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import React, { PropTypes } from 'react';
 import shortid from 'shortid';
 import classnames from 'classnames';
-import Scope from './Scope';
-import Style, { css } from './Style';
+import StyleElement from './StyleElement';
 import Template from './Template';
-
-export { css } from './Style';
 
 function omit(obj, keys) {
     return (Object.keys(obj) || []).reduce(function (newObj, key) {
@@ -33,53 +34,175 @@ function pick(obj, keys) {
     }, {});
 }
 
-var StyleScope = function (_Style) {
-    _inherits(StyleScope, _Style);
+function assign(target) {
+    for (var _len = arguments.length, sources = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        sources[_key - 1] = arguments[_key];
+    }
+
+    for (var _iterator = sources, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+        var _ref;
+
+        if (_isArray) {
+            if (_i >= _iterator.length) break;
+            _ref = _iterator[_i++];
+        } else {
+            _i = _iterator.next();
+            if (_i.done) break;
+            _ref = _i.value;
+        }
+
+        var source = _ref;
+
+        for (var _iterator2 = Object.keys(source), _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
+            var _ref2;
+
+            if (_isArray2) {
+                if (_i2 >= _iterator2.length) break;
+                _ref2 = _iterator2[_i2++];
+            } else {
+                _i2 = _iterator2.next();
+                if (_i2.done) break;
+                _ref2 = _i2.value;
+            }
+
+            var key = _ref2;
+
+            if (!target.hasOwnProperty(key)) {
+                target[key] = source[key];
+            }
+        }
+    }
+    return target;
+}
+
+var StyleScope = function (_React$Component) {
+    _inherits(StyleScope, _React$Component);
 
     function StyleScope() {
         _classCallCheck(this, StyleScope);
 
-        return _possibleConstructorReturn(this, _Style.apply(this, arguments));
+        return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
     }
 
-    StyleScope.Component = function Component(_Component) {
-        var _class, _temp;
-
-        var Style = this;
-        if (Style.textContent instanceof Template) {
-            var text = this.textContent.tag();
-            Style.preprocess(text);
-        }
-        var stylePropKeys = Object.keys(Style.propTypes);
-        return _temp = _class = function (_StyleScope) {
-            _inherits(_class, _StyleScope);
-
-            function _class(props) {
-                _classCallCheck(this, _class);
-
-                var _this2 = _possibleConstructorReturn(this, _StyleScope.call(this, props));
-
-                _this2.uid = 'scope-' + shortid.generate();
-                return _this2;
-            }
-
-            _class.prototype.render = function render() {
-                var styleProps = pick(this.props, stylePropKeys);
-                var props = omit(this.props, stylePropKeys);
-                var className = classnames(this.uid, this.props.className);
-                return React.createElement(
-                    Scope,
-                    { className: className },
-                    React.createElement(Style, _extends({}, props, { styleProps: styleProps, className: className })),
-                    React.createElement(_Component, props)
-                );
-            };
-
-            return _class;
-        }(StyleScope), _class.defaultProps = _extends({}, Style.defaultProps, _Component.defaultProps || {}), _class.propTypes = _extends({}, Style.propTypes, _Component.propTypes || {}), _temp;
-    };
-
     return StyleScope;
-}(Style);
+}(React.Component);
 
-export { StyleScope as default };
+function Style() {
+    for (var _len2 = arguments.length, styles = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        styles[_key2] = arguments[_key2];
+    }
+
+    var _propTypes = assign.apply(undefined, [{}].concat(styles.map(function (base) {
+        return base.propTypes || {};
+    })));
+    var _defaultProps = assign.apply(undefined, [{}].concat(styles.map(function (base) {
+        return base.defaultProps || {};
+    })));
+    var _templates = styles.map(function (S) {
+        return S.textContent;
+    });
+    return function (_StyleElement) {
+        _inherits(_class, _StyleElement);
+
+        function _class() {
+            _classCallCheck(this, _class);
+
+            return _possibleConstructorReturn(this, _StyleElement.apply(this, arguments));
+        }
+
+        _class.Component = function Component(_Component) {
+            var _class2, _temp;
+
+            var Style = this;
+            var stylePropKeys = Object.keys(_propTypes);
+            this.preprocess(this.textContent.tag());
+            return _temp = _class2 = function (_Component2) {
+                _inherits(_class2, _Component2);
+
+                _class2.prototype._merge_styles = function _merge_styles(className, styleProps, props) {
+                    var style = React.createElement(Style, _extends({}, props, { className: className, styleProps: styleProps }));
+                    props.children = React.Children.map(props.children, function (child) {
+                        if (!child.type || !(child.type.prototype instanceof StyleElement)) {
+                            return child;
+                        }
+                        style = React.cloneElement(child, child.props, [style.props.children, child.props.children].join('\n'));
+                    });
+
+                    return style;
+                };
+
+                function _class2(props) {
+                    _classCallCheck(this, _class2);
+
+                    var _this3 = _possibleConstructorReturn(this, _Component2.call(this, props));
+
+                    _this3.uid = _Component.name + 'Scope-' + shortid.generate();
+                    return _this3;
+                }
+
+                _class2.prototype.render = function render() {
+                    var styleProps = pick(this.props, stylePropKeys);
+                    var props = omit(this.props, [].concat(stylePropKeys));
+                    var className = classnames(this.uid, this.props.className);
+                    var style = this._merge_styles(className, styleProps, props);
+                    var element = new _Component(props).render();
+                    return React.createElement(
+                        element.type,
+                        _extends({}, props, { className: className }),
+                        style,
+                        element.props.children
+                    );
+                };
+
+                return _class2;
+            }(_Component), _class2.Style = this, _temp;
+        };
+
+        _createClass(_class, null, [{
+            key: 'propTypes',
+            set: function set(propTypes) {
+                Object.defineProperty(this, 'propTypes', {
+                    value: assign(propTypes, _propTypes)
+                });
+            }
+        }, {
+            key: 'defaultProps',
+            set: function set(defaultProps) {
+                Object.defineProperty(this, 'defaultProps', {
+                    value: assign(defaultProps, _defaultProps)
+                });
+            }
+        }, {
+            key: 'textContent',
+            set: function set(content) {
+                if (content instanceof Template) {
+                    var templates = [].concat(_templates, [content]);
+                    Object.defineProperty(this, 'textContent', {
+                        value: templates.reduce(function (template, t) {
+                            var _template$keys, _template$strings;
+
+                            (_template$keys = template.keys).push.apply(_template$keys, t.keys);
+                            (_template$strings = template.strings).push.apply(_template$strings, t.strings);
+                            return template;
+                        })
+                    });
+                }
+            }
+        }]);
+
+        return _class;
+    }(StyleElement);
+}
+
+process.env.NODE_ENV !== "production" ? Style.propTypes = {} : void 0;
+Style.defaultProps = {};
+
+Style.template = function (strings) {
+    for (var _len3 = arguments.length, keys = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+        keys[_key3 - 1] = arguments[_key3];
+    }
+
+    return new Template(strings, strings.map(function (string, index) {
+        return keys[index];
+    }));
+};

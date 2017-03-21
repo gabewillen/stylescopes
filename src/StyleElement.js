@@ -8,12 +8,8 @@ import autoprefixer from 'autoprefixer'
 const DYNAMIC_DECL_REGEX = /\`\$\d*\`/g;
 
 
-export function css(strings, ...keys) {
-    return new Template(strings, strings.map((string, index) => keys[index]));
-}
 
-
-export default class Style extends React.Component {
+export default class StyleElement extends React.Component {
 
     static propTypes = {};
     static defaultProps = {};
@@ -43,7 +39,7 @@ export default class Style extends React.Component {
     }
 
     static preprocess(textContent) {
-        this.tree = postcss().process(`{ > *:not(style) {${textContent}} }`).root;
+        this.tree = postcss().process(`.{${textContent}}`).root;
     }
 
     updateClassName(className) {
@@ -89,7 +85,7 @@ export default class Style extends React.Component {
 
     renderTextContent(){
         const {styleProps, ...other} = this.props;
-        const className = `.${other.className || ''}`;
+        const className = `.${other.className.split(' ').join('.') || ''}`;
         const updated = [this.updateClassName(className), this.updateDynamicDecl(styleProps, other)];
         if (updated.some(Boolean)) {
             const result = this.tree.toResult();
