@@ -115,7 +115,7 @@ var Style = function () {
                 var _class3, _temp2;
 
                 var Style = this;
-                var stylePropKeys = Object.keys(_propTypes);
+                var stylePropKeys = Object.keys(this.propTypes);
                 this.preprocess(this.textContent.tag());
                 return _temp2 = _class3 = function (_Component2) {
                     _inherits(_class3, _Component2);

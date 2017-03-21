@@ -94,7 +94,7 @@ export default class Style {
             }
             static Component(Component) {
                 const Style = this;
-                const stylePropKeys = Object.keys(_propTypes);
+                const stylePropKeys = Object.keys(this.propTypes);
                 this.preprocess(this.textContent.tag());
                 return class extends Component {
                     static Style = this;
